@@ -1,5 +1,3 @@
----
-
 List of Changes:
 
 1. Used Digits dataset instead of Iris dataset.
