@@ -1,4 +1,4 @@
---
+---
 
 List of Changes:
 
@@ -7,6 +7,7 @@ List of Changes:
 3. Saved the digits model as pkl file.
 4. Modified API input from 4 Iris features to 64-length pixel vector.
 5. Added accuracy score and classification report in train.py.
+6. Added screenshots of API docs and responses.
 
 ---
 - Video Explanation: [FastAPI lab](https://www.youtube.com/watch?v=KReburHqRIQ&list=PLcS4TrUUc53LeKBIyXAaERFKBJ3dvc9GZ&index=4)
