@@ -1,3 +1,12 @@
+--
+
+List of Changes:
+
+1. Used Digits dataset instead of Iris dataset.
+2. Replaced Decision Tree with SVM (RBF kernel).
+3. Saved the digits model as pkl file.
+4. Modified API input from 4 Iris features to 64-length pixel vector.
+5. Added accuracy score and classification report in train.py.
 
 ---
 - Video Explanation: [FastAPI lab](https://www.youtube.com/watch?v=KReburHqRIQ&list=PLcS4TrUUc53LeKBIyXAaERFKBJ3dvc9GZ&index=4)
