@@ -1,35 +1,24 @@
 from fastapi import FastAPI, status, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, conlist
 from predict import predict_data
 
+app = FastAPI(title="Digits Classifier API")
 
-app = FastAPI()
+class DigitData(BaseModel):
+    features: conlist(float, min_length=64, max_length=64)
 
-class IrisData(BaseModel):
-    petal_length: float
-    sepal_length: float
-    petal_width: float
-    sepal_width: float
-
-class IrisResponse(BaseModel):
-    response:int
+class DigitResponse(BaseModel):
+    prediction: int
 
 @app.get("/", status_code=status.HTTP_200_OK)
 async def health_ping():
     return {"status": "healthy"}
 
-@app.post("/predict", response_model=IrisResponse)
-async def predict_iris(iris_features: IrisData):
+@app.post("/predict", response_model=DigitResponse)
+async def predict_digit(payload: DigitData):
     try:
-        features = [[iris_features.sepal_length, iris_features.sepal_width,
-                    iris_features.petal_length, iris_features.petal_width]]
-
-        prediction = predict_data(features)
-        return IrisResponse(response=int(prediction[0]))
-    
+        pred = predict_data(payload.features)
+        return DigitResponse(prediction=int(pred[0]))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
 
-
-    
