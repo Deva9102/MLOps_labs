@@ -27,3 +27,4 @@ def split_data(X, y):
         X, y, test_size=0.3, random_state=12, stratify=y
     )
     return X_train, X_test, y_train, y_test
+
