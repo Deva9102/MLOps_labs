@@ -3,7 +3,7 @@ import numpy as np
 
 def predict_data(features):
     """
-    Predict the class labels for the input data.
+    Predict class labels for the input data.
     Args:
         X (numpy.ndarray): Input data for which predictions are to be made.
     Returns:
