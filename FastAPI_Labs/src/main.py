@@ -21,4 +21,3 @@ async def predict_digit(payload: DigitData):
         return DigitResponse(prediction=int(pred[0]))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
