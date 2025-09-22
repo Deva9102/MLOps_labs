@@ -5,7 +5,7 @@ from data import load_data, split_data
 
 def fit_model(X_train, y_train, X_test, y_test):
     """
-    Train SVM classifier on the Digits dataset and save the model to a file.
+    Train SVM classifier on the Digits dataset and save the model to a pkl file.
     Args:
         X_train (numpy.ndarray): Training features (n_samples, 64).
         y_train (numpy.ndarray): Training labels (n_samples,).
