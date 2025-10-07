@@ -1,4 +1,4 @@
-# Airflow Lab – Random Forest on Breast Cancer (CSV)
+# Airflow Lab – Random Forest on Breast Cancer
 
 A minimal Airflow project that trains a **RandomForestClassifier** on the classic **Breast Cancer Wisconsin (diagnostic)** dataset, logs evaluation metrics, saves the trained model, and emails a simple “Success!” notice when the run finishes.
 
