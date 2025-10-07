@@ -2,30 +2,27 @@
 
 A minimal Airflow project that trains a **RandomForestClassifier** on the classic **Breast Cancer Wisconsin (diagnostic)** dataset, logs evaluation metrics, saves the trained model, and emails a simple “Success!” notice when the run finishes.
 
-## Project layout
 
-# Airflow Lab – Random Forest on Breast Cancer (CSV)
+## Project Layout
 
-A minimal Airflow project that trains a **RandomForestClassifier** on the classic **Breast Cancer Wisconsin (diagnostic)** dataset, logs evaluation metrics, saves the trained model, and emails a simple “Success!” notice when the run finishes.
-
-## Project layout
-
+```
 Lab_3/
 ├─ dags/
-│ ├─ my_dag.py
-│ ├─ data/
-│ │ └─ breast_cancer.csv
-│ ├─ model/
-│ │ └─ model.sav # created after first successful run
-│ ├─ src/
-│ │ ├─ model_development.py
-│ │ └─ success_email.py
-│ └─ templates/
-│ ├─ success.html
-│ └─ failure.html
+│  ├─ my_dag.py
+│  ├─ data/
+│  │  └─ breast_cancer.csv
+│  ├─ model/
+│  │  └─ model.sav            
+│  ├─ src/
+│  │  ├─ model_development.py
+│  │  └─ success_email.py
+│  └─ templates/
+│     ├─ success.html
+│     └─ failure.html
 └─ requirements.txt
+```
 
----
+> Make sure all of the above lives under your **`$AIRFLOW_HOME/dags/`** folder, or update `dags_folder` in `airflow.cfg`.
 
 ## What it does
 
@@ -48,81 +45,116 @@ Lab_3/
 
 Ensure the project's DAG file (my_dag.py) and associated source code (dags/src/) are located under the $AIRFLOW_HOME/dags directory. If you place them elsewhere, you must update the dags_folder setting in your airflow.cfg file.
 
-3. Configure SMTP Connection for Email
-The DAG includes a success email notification step, which requires an Airflow connection named email_smtp.
+---
 
-Via Airflow UI
+## Quickstart
 
-Navigate to Admin → Connections → +.
+### 1) Environment
 
-Set the following fields:
+```bash
+# Python 3.10+ recommended
+python3 -m venv airflow_venv
+source airflow_venv/bin/activate
 
-Conn Id: email_smtp
+# Install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-Conn Type: SMTP
+**Example `requirements.txt`:**
+```txt
+apache-airflow==2.9.2
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+joblib>=1.3.0
+```
 
-Host: smtp.gmail.com (Example)
+### 2) Initialize Airflow
 
-Port: 587
+```bash
+# Optional, if not set globally:
+export AIRFLOW_HOME=~/airflow
 
-Login: your_email@gmail.com
+airflow db init
 
-Password: your_app_password (For Gmail, you must use an App Password, not your primary account password.)
+# Create an admin user (edit values as needed):
+airflow users create   --username admin   --firstname Admin   --lastname User   --role Admin   --email you@example.com
+```
 
-Extra: {"timeout": 30} (Optional)
+### 3) Configure SMTP Connection (for success email)
 
-Via Airflow CLI (Example)
+This project expects an Airflow **Connection** with Conn Id **`email_smtp`**.
 
-airflow connections add email_smtp \
-  --conn-type SMTP \
-  --conn-host smtp.gmail.com \
-  --conn-login your_email@gmail.com \
-  --conn-password 'your_app_password' \
-  --conn-port 587
+**Via UI:**
+- Go to **Admin → Connections → +**
+- **Conn Id**: `email_smtp`  
+- **Conn Type**: `SMTP`  
+- **Host**: `smtp.gmail.com` (example)  
+- **Port**: `587`  
+- **Login**: `your_email@gmail.com`  
+- **Password**: *Gmail App Password* (not your primary password)  
+- **Extra (optional)**:
+  ```json
+  {"timeout": 30}
+  ```
 
-4. Running the DAG
-Start Airflow Services
+**Via CLI:**
+```bash
+airflow connections add email_smtp   --conn-type SMTP   --conn-host smtp.gmail.com   --conn-login your_email@gmail.com   --conn-password 'your_app_password'   --conn-port 587
+```
 
-Open two separate terminals for the Webserver and the Scheduler.
+> Use **Port 587** with STARTTLS. If you use 465 (SSL), you may hit `SSLError: WRONG_VERSION_NUMBER`.
 
-Start Webserver:
+---
 
+## Running
+
+Open two terminals:
+
+**Terminal A – Webserver**
+```bash
+source airflow_venv/bin/activate
 airflow webserver --port 8080
+```
 
-Start Scheduler (in a new terminal):
-
+**Terminal B – Scheduler**
+```bash
+source airflow_venv/bin/activate
 airflow scheduler
+```
 
-Trigger the DAG
+Trigger the DAG:
 
-You can trigger the DAG using the CLI or the Webserver UI.
-
-CLI Trigger:
-
+**CLI**
+```bash
 airflow dags trigger Airflow_Lab3_new2
+```
 
-UI Trigger: Open http://localhost:8080, find the DAG named Airflow_Lab3_new2, and click the Trigger DAG button.
+**UI**  
+Visit `http://localhost:8080`, find **`Airflow_Lab3_new2`**, click **Trigger DAG**.
 
-5. Where to See Results
-Metrics
+---
 
-Check the task logs for the calculated model performance metrics:
+## Where to See Results
 
-Location: DAG → last run → task build_save_model_task → Logs.
+### Metrics
+- UI → DAGs → **Airflow_Lab3_new2** → Last Run → Task **`build_save_model_task`** → **Logs**
+- Example:
+  ```
+  Metrics -> accuracy: 0.9415, precision: 0.9450, recall: 0.9626
+  Saved model: dags/model/model.sav
+  ```
 
-Example Output:
+### Model Artifact
+- Saved to: `dags/model/model.sav`
 
-Metrics -> accuracy: 0.9415, precision: 0.9450, recall: 0.9626
-Saved model: dags/model/model.sav
+### Email
+- On success, a simple HTML “Success!” email is sent using **`email_smtp`** to the recipient defined in `src/success_email.py`.
 
-Email
-
-A simple “Success!” email will be sent to the address configured in success_email.py if the DAG completes successfully and the email_smtp connection is correct.
-
-6. Customization
+### 6. Customization
 Model : Used RandomForestClassifier(...)in dags/src/model_development.py.
 
 More Metrics/Artifacts: Compute and use print(...) or a logging statement within the build_model(...) function to output additional metrics.
 
 Different Dataset: Placed a new CSV file (breast_cancer.csv) in dags/data/ and adjust the load_data(...) function in dags/src/data_processing.py to handle the new format.
-
