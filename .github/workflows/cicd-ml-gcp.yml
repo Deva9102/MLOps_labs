@@ -24,6 +24,7 @@ env:
 jobs:
   build-train-push:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,17 +38,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: pip-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt') }}
+          key: pip-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('Github_Labs/requirements.txt') }}
           restore-keys: |
             pip-${{ runner.os }}-${{ env.PYTHON_VERSION }}-
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r Github_Labs/requirements.txt
 
       - name: Run tests
-        run: pytest -q
+        env:
+          PYTHONPATH: ${{ github.workspace }}/Github_Labs
+        run: |
+          # use whichever exists in your repo
+          if [ -d Github_Labs/test ]; then pytest -q Github_Labs/test; 
+          elif [ -d Github_Labs/tests ]; then pytest -q Github_Labs/tests;
+          else echo "No tests dir, skipping"; fi
 
       - name: Auth to GCP
         id: auth
@@ -67,10 +74,15 @@ jobs:
 
       - name: Train & Save Model to GCS
         env:
+          PYTHONPATH: ${{ github.workspace }}/Github_Labs
           GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME }}
           VERSION_FILE_NAME: ${{ secrets.VERSION_FILE_NAME }}
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/key.json
-        run: python train_and_save_model.py
+          PASSWORDS_CSV: ${{ github.workspace }}/Github_Labs/data/passwords.csv
+        run: |
+          python -m src.train_and_save_model
+
+        working-directory: Github_Labs
 
       - name: Read model version from GCS
         id: get_version
@@ -89,20 +101,20 @@ jobs:
           echo "Project: ${{ secrets.GCP_PROJECT_ID }}"
           echo "Image:   ${{ env.REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_BASENAME }}:${{ env.MODEL_VERSION }}"
 
-      - name: Download trained model artifacts from GCS
+      - name: Download trained model artifacts from GCS (into Github_Labs/)
         env:
           GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME }}
         run: |
-          mkdir -p trained_models
-          gsutil -m rsync -r gs://${GCS_BUCKET_NAME}/trained_models ./trained_models || true
+          mkdir -p Github_Labs/trained_models
+          gsutil -m rsync -r gs://${GCS_BUCKET_NAME}/trained_models Github_Labs/trained_models || true
 
-      - name: Build & Push Docker image
+      - name: Build & Push Docker image (Dockerfile is inside Github_Labs)
         env:
           IMAGE_NAME: ${{ env.REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_BASENAME }}
           MODEL_VERSION: ${{ env.MODEL_VERSION }}
         run: |
           echo "Building image: ${IMAGE_NAME}:${MODEL_VERSION}"
-          docker build -t ${IMAGE_NAME}:${MODEL_VERSION} .
+          docker build -f Github_Labs/Dockerfile -t ${IMAGE_NAME}:${MODEL_VERSION} Github_Labs
           docker push ${IMAGE_NAME}:${MODEL_VERSION}
           docker tag ${IMAGE_NAME}:${MODEL_VERSION} ${IMAGE_NAME}:latest
           docker push ${IMAGE_NAME}:latest
