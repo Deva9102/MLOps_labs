@@ -1,5 +1,12 @@
 # CI/CD with GitHub Actions and GCP - Intermediate Lab
 
+## Changes 
+- Swapped the Iris RF demo for a Password Strength scorer with GCS reports + version bump.
+- Added a simple registry (registry/manifest.json) to promote best metric.
+- Added tests using MagicMock for GCS.
+- Updated CI/CD Workflow
+- Push Docker to Artifact Registry with version + latest.
+
 This repository is a hands-on lab designed to teach you how to set up a CI/CD pipeline for a machine learning project using GitHub Actions and Google Cloud Platform (GCP). You'll learn how to train a model, version it, and deploy it using Docker containers on GCP.
 
 ---
