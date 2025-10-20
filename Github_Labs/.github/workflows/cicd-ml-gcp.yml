@@ -19,7 +19,7 @@ concurrency:
 env:
   PYTHON_VERSION: "3.10"
   REGION: "us-east4”
-  REPOSITORY_NAME: "my-repo"  
+  REPOSITORY_NAME: "githubub-repo"  
   IMAGE_BASENAME: "model-image" 
 
 jobs:
