@@ -1,0 +1,47 @@
+stages:
+  make_dataset:
+    cmd: python scripts/make_dataset.py --out data/fitness.csv
+    deps:
+      - scripts/make_dataset.py
+    outs:
+      - data/fitness.csv
+
+  features:
+    cmd: python scripts/features.py --in data/fitness.csv --out data/fitness.feat.csv
+    deps:
+      - data/fitness.csv
+      - scripts/features.py
+      - params.yaml
+    outs:
+      - data/fitness.feat.csv
+
+  train_v1:
+    cmd: python scripts/train_v1.py --in data/fitness.feat.csv --model models/model_v1.pkl --metrics metrics/metrics_v1.json
+    deps:
+      - data/fitness.feat.csv
+      - scripts/train_v1.py
+      - params.yaml
+    outs:
+      - models/model_v1.pkl
+    metrics:
+      - metrics/metrics_v1.json
+
+  train_v2:
+    cmd: python scripts/train_v2.py --in data/fitness.feat.csv --model models/model_v2.pkl --metrics metrics/metrics_v2.json
+    deps:
+      - data/fitness.feat.csv
+      - scripts/train_v2.py
+      - params.yaml
+    outs:
+      - models/model_v2.pkl
+    metrics:
+      - metrics/metrics_v2.json
+
+  report:
+    cmd: python scripts/report.py --m1 metrics/metrics_v1.json --m2 metrics/metrics_v2.json --out reports/fitness.html
+    deps:
+      - scripts/report.py
+      - metrics/metrics_v1.json
+      - metrics/metrics_v2.json
+    outs:
+      - reports/fitness.html

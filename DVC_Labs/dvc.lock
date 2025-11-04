@@ -1,0 +1,106 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: python scripts/make_dataset.py --out data/fitness.csv
+    deps:
+    - path: scripts/make_dataset.py
+      hash: md5
+      md5: deb3066f6018a9d30dfd1c3a315fb98f
+      size: 637
+    outs:
+    - path: data/fitness.csv
+      hash: md5
+      md5: 7b68277d71f31cf4e59f91e97b570262
+      size: 56229
+  features:
+    cmd: python scripts/features.py --in data/fitness.csv --out 
+      data/fitness.feat.csv
+    deps:
+    - path: data/fitness.csv
+      hash: md5
+      md5: 7b68277d71f31cf4e59f91e97b570262
+      size: 56229
+    - path: params.yaml
+      hash: md5
+      md5: ab99659c7d31d369e7fdf1dc86e549f7
+      size: 218
+    - path: scripts/features.py
+      hash: md5
+      md5: d08a7ccb551aec78ca67c330a517af75
+      size: 959
+    outs:
+    - path: data/fitness.feat.csv
+      hash: md5
+      md5: db3d774929b089a41971a6635d744f77
+      size: 57338
+  train_v1:
+    cmd: python scripts/train_v1.py --in data/fitness.feat.csv --model 
+      models/model_v1.pkl --metrics metrics/metrics_v1.json
+    deps:
+    - path: data/fitness.feat.csv
+      hash: md5
+      md5: db3d774929b089a41971a6635d744f77
+      size: 57338
+    - path: params.yaml
+      hash: md5
+      md5: ab99659c7d31d369e7fdf1dc86e549f7
+      size: 218
+    - path: scripts/train_v1.py
+      hash: md5
+      md5: cd0ce80bab14cce5730e297c4c0d299c
+      size: 1619
+    outs:
+    - path: metrics/metrics_v1.json
+      hash: md5
+      md5: 5ad4ad51a87f0afe45ee99c9c5bbbd8a
+      size: 181
+    - path: models/model_v1.pkl
+      hash: md5
+      md5: e4461f24dd3f9afa3c0eb509893a0acf
+      size: 873
+  train_v2:
+    cmd: python scripts/train_v2.py --in data/fitness.feat.csv --model 
+      models/model_v2.pkl --metrics metrics/metrics_v2.json
+    deps:
+    - path: data/fitness.feat.csv
+      hash: md5
+      md5: db3d774929b089a41971a6635d744f77
+      size: 57338
+    - path: params.yaml
+      hash: md5
+      md5: ab99659c7d31d369e7fdf1dc86e549f7
+      size: 218
+    - path: scripts/train_v2.py
+      hash: md5
+      md5: 498f29fda033048ea033151a129a7362
+      size: 1725
+    outs:
+    - path: metrics/metrics_v2.json
+      hash: md5
+      md5: 4ce5be6825743a1f7c4aafedeccca14d
+      size: 187
+    - path: models/model_v2.pkl
+      hash: md5
+      md5: cf7d33540dcfbebf9bbc7d3a6ff424fd
+      size: 8848961
+  report:
+    cmd: python scripts/report.py --m1 metrics/metrics_v1.json --m2 
+      metrics/metrics_v2.json --out reports/fitness.html
+    deps:
+    - path: metrics/metrics_v1.json
+      hash: md5
+      md5: 5ad4ad51a87f0afe45ee99c9c5bbbd8a
+      size: 181
+    - path: metrics/metrics_v2.json
+      hash: md5
+      md5: 4ce5be6825743a1f7c4aafedeccca14d
+      size: 187
+    - path: scripts/report.py
+      hash: md5
+      md5: a350ee626604e019732ccb5e008d4846
+      size: 2052
+    outs:
+    - path: reports/fitness.html
+      hash: md5
+      md5: 988bed71c4fdddf0a910d1330e7dba83
+      size: 916

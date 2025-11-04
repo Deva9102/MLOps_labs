@@ -1,0 +1,17 @@
+seed: 42
+split:
+  test_size: 0.2
+  shuffle: true
+
+features:
+  add_weekend_flag: false
+  scale: true
+
+model_v1:
+  type: LinearRegression
+  fit_intercept: true
+
+model_v2:
+  type: Ridge
+  alpha: 1.0
+  fit_intercept: true
