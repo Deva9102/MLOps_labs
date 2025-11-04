@@ -1,0 +1,22 @@
+<html>
+<head><meta charset="utf-8"><title>Fitness Model Report</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, sans-serif; margin: 24px; }
+  table { border-collapse: collapse; }
+  td, th { border: 1px solid #ddd; padding: 8px; }
+  th { background: #f2f2f2; }
+  code { background:#f7f7f7; padding:2px 4px; }
+</style></head>
+<body>
+  <h1>Model Comparison</h1>
+  <p>V1: <code>LinearRegression</code> vs V2: <code>RandomForestRegressor</code></p>
+  <table>
+    <thead><tr><th>Metric</th><th>V1</th><th>V2</th><th>Δ (better→)</th></tr></thead>
+    <tbody>
+      <tr><td>RMSE</td><td>86.3704</td><td>96.2524</td><td>↑ 9.8821</td></tr>
+      <tr><td>MAE</td><td>68.4350</td><td>74.6912</td><td>↑ 6.2562</td></tr>
+      <tr><td>R²</td><td>0.7047</td><td>0.6333</td><td>↓ 0.0714</td></tr>
+    </tbody>
+  </table>
+  <p>Samples: 1000 — Features: 2 — Target: <code>calories</code></p>
+</body></html>

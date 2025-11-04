@@ -1,0 +1,9 @@
+{
+  "rmse": 86.37037331581672,
+  "mae": 68.4350321282461,
+  "r2": 0.7047275287134154,
+  "n_features": 2,
+  "n_samples": 1000,
+  "target": "calories",
+  "model": "LinearRegression"
+}
