@@ -1,0 +1,108 @@
+{
+  "path": "examples\\sample_dataset.csv",
+  "n_rows": 20,
+  "n_cols": 10,
+  "missing_values": {
+    "id": 0,
+    "user_id": 0,
+    "age": 1,
+    "income": 2,
+    "city": 2,
+    "country": 0,
+    "segment": 0,
+    "signup_days_ago": 0,
+    "churned": 0,
+    "num_logins": 0
+  },
+  "numeric_ranges": {
+    "id": {
+      "min": 1.0,
+      "max": 20.0,
+      "negative_count": 0
+    },
+    "age": {
+      "min": -3.0,
+      "max": 140.0,
+      "negative_count": 1
+    },
+    "income": {
+      "min": 0.0,
+      "max": 150000.0,
+      "negative_count": 0
+    },
+    "signup_days_ago": {
+      "min": 5.0,
+      "max": 800.0,
+      "negative_count": 0
+    },
+    "churned": {
+      "min": 0.0,
+      "max": 1.0,
+      "negative_count": 0
+    },
+    "num_logins": {
+      "min": 0.0,
+      "max": 60.0,
+      "negative_count": 0
+    }
+  },
+  "schema": {
+    "id": {
+      "dtype": "int64",
+      "unique_values": 20
+    },
+    "user_id": {
+      "dtype": "object",
+      "unique_values": 20
+    },
+    "age": {
+      "dtype": "float64",
+      "unique_values": 19
+    },
+    "income": {
+      "dtype": "float64",
+      "unique_values": 18
+    },
+    "city": {
+      "dtype": "object",
+      "unique_values": 9
+    },
+    "country": {
+      "dtype": "object",
+      "unique_values": 1
+    },
+    "segment": {
+      "dtype": "object",
+      "unique_values": 1
+    },
+    "signup_days_ago": {
+      "dtype": "int64",
+      "unique_values": 17
+    },
+    "churned": {
+      "dtype": "int64",
+      "unique_values": 2
+    },
+    "num_logins": {
+      "dtype": "int64",
+      "unique_values": 18
+    }
+  },
+  "constant_columns": [
+    "country",
+    "segment"
+  ],
+  "high_cardinality_columns": {
+    "user_id": 20,
+    "city": 9
+  },
+  "range_issues": {
+    "age": {
+      "min_allowed": 0.0,
+      "max_allowed": 120.0,
+      "actual_min": -3.0,
+      "actual_max": 140.0,
+      "out_of_range_count": 3
+    }
+  }
+}

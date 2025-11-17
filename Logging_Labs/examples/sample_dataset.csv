@@ -1,0 +1,21 @@
+id,user_id,age,income,city,country,segment,signup_days_ago,churned,num_logins
+1,u_001,25,55000,Boston,USA,Standard,120,0,34
+2,u_002,30,72000,New York,USA,Standard,365,1,12
+3,u_003,,68000,Chicago,USA,Standard,45,0,5
+4,u_004,130,88000,San Francisco,USA,Standard,10,0,40
+5,u_005,-3,41000,Los Angeles,USA,Standard,300,1,2
+6,u_006,42,,Seattle,USA,Standard,200,0,18
+7,u_007,37,95000,,USA,Standard,600,0,0
+8,u_008,29,51000,Boston,USA,Standard,90,0,7
+9,u_009,51,123000,New York,USA,Standard,730,1,60
+10,u_010,60,99000,Chicago,USA,Standard,5,0,3
+11,u_011,22,48000,Miami,USA,Standard,60,0,9
+12,u_012,33,76000,Denver,USA,Standard,150,0,15
+13,u_013,27,,Austin,USA,Standard,210,1,4
+14,u_014,0,35000,Boston,USA,Standard,365,0,1
+15,u_015,115,150000,New York,USA,Standard,20,0,55
+16,u_016,140,47000,Seattle,USA,Standard,400,1,25
+17,u_017,45,0,Chicago,USA,Standard,800,0,0
+18,u_018,39,67000,Los Angeles,USA,Standard,90,0,11
+19,u_019,28,52000,,USA,Standard,300,0,3
+20,u_020,26,61000,Boston,USA,Standard,30,0,8
