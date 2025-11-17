@@ -1,4 +1,4 @@
-# MLOps Lab — Structured Logging & Dataset Quality Checker
+# Structured Logging & Dataset Quality Checker
 
 This lab implements a **dataset quality checker** with a **logging setup**.
 
