@@ -1,0 +1,22 @@
+# Terraform
+.terraform/             
+terraform.tfstate       
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+
+# Credentials / secrets
+secrets/
+*.json
+
+# Python
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+
+# macOS
+.DS_Store
